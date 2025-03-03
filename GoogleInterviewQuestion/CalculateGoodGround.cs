@@ -14,19 +14,20 @@ public static class CalculateGoodGround
             {
                 if (fieldLayout[row][col] == 0) { continue; }
 
-                int above = 0, left = 0, aboveLeft = 0;
-
-                if (row > 0) { above = largestSquareMatrix[row - 1, col]; }
-
-                if (col > 0) { left = largestSquareMatrix[row, col - 1]; }
-
-                if (row > 0 && col > 0) { aboveLeft = largestSquareMatrix[row - 1, col - 1]; }
-
-                largestSquareMatrix[row, col] = Math.Min(above, Math.Min(left, aboveLeft)) + 1;
+                largestSquareMatrix[row, col] = CalculateCellValue(row, col, largestSquareMatrix);
             }
         }
 
         return GetMaxValue(largestSquareMatrix);
+    }
+
+    private static int CalculateCellValue(int row, int col, int[,] largestSquareMatrix)
+    {
+        var above = row > 0 ? largestSquareMatrix[row - 1, col] : 0;
+        var left = col > 0 ? largestSquareMatrix[row, col - 1] : 0;
+        var aboveLeft = row > 0 && col > 0 ? largestSquareMatrix[row - 1, col - 1] : 0;
+
+        return Math.Min(above, Math.Min(left, aboveLeft)) + 1; // the +1 here effectively represents the current cell value from the fieldLayout passed into the LargestSquare method
     }
 
     private static int GetMaxValue(int[,] largestSquareMatrix)
